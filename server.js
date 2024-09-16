@@ -35,8 +35,13 @@ const User = mongoose.model('User', UserSchema);
 // Função para criar o usuário administrador
 async function createAdminUser() {
   try {
-    const username = 'admin';
-    const password = 'senha123';
+    const username = process.env.ADMIN_USERNAME;
+    const password = process.env.ADMIN_PASSWORD;
+
+    if (!username || !password) {
+      console.error('ADMIN_USERNAME ou ADMIN_PASSWORD não definidos no .env');
+      return;
+    }
 
     // Verificar se o usuário já existe
     const existingUser = await User.findOne({ username });
@@ -55,6 +60,13 @@ async function createAdminUser() {
     console.error('Erro ao criar o usuário administrador:', error);
   }
 }
+
+// Middleware para verificar o token
+const verifyToken = require('./middleware/auth');
+
+// Importar as rotas de peças
+const pecasRouter = require('./routes/pecas');
+app.use('/pecas', pecasRouter);
 
 // Rota de login
 app.post('/login', async (req, res) => {
@@ -78,26 +90,6 @@ app.post('/login', async (req, res) => {
   });
 
   res.json({ token });
-});
-
-// Middleware para verificar o token
-function verifyToken(req, res, next) {
-  const token = req.headers['authorization'];
-
-  if (!token)
-    return res.status(403).json({ message: 'Nenhum token fornecido' });
-
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err)
-      return res.status(500).json({ message: 'Falha ao autenticar o token' });
-    req.userId = decoded.id;
-    next();
-  });
-}
-
-// Rota protegida de exemplo
-app.get('/home', verifyToken, (req, res) => {
-  res.json({ message: 'Bem-vindo à página inicial protegida!' });
 });
 
 // Rota para verificar o token
