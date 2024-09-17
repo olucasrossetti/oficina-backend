@@ -6,15 +6,55 @@ const PecaSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  descricao: {
+  categoria: {
+    type: String,
+    required: true,
+  },
+  fabricante: {
+    type: String,
+    required: true,
+  },
+  fornecedor: {
+    type: String,
+    required: true,
+  },
+  setor: {
+    type: String,
+    required: true,
+  },
+  dataEntrada: {
+    type: Date,
+    required: true,
+  },
+  observacoes: {
     type: String,
   },
-  quantidade: {
+  estoqueAtual: {
     type: Number,
     required: true,
     default: 0,
   },
-  preco: {
+  precoTabela: {
+    type: Number,
+    required: true,
+    default: 0.0,
+  },
+  descontoFornecedor: {
+    type: Number,
+    required: true,
+    default: 0.0,
+  },
+  precoCompra: {
+    type: Number,
+    required: true,
+    default: 0.0,
+  },
+  lucro: {
+    type: Number,
+    required: true,
+    default: 0.0,
+  },
+  precoVenda: {
     type: Number,
     required: true,
     default: 0.0,

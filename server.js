@@ -68,6 +68,13 @@ const verifyToken = require('./middleware/auth');
 const pecasRouter = require('./routes/pecas');
 app.use('/pecas', pecasRouter);
 
+const clientsRouter = require('./routes/clients');
+app.use('/clients', clientsRouter);
+
+// Importar as rotas de veículos
+const vehiclesRouter = require('./routes/vehicles');
+app.use('/vehicles', vehiclesRouter);
+
 // Rota de login
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
